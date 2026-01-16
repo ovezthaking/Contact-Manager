@@ -19,5 +19,8 @@ class Contact(models.Model):
     status = models.ForeignKey(ContactStatus, on_delete=models.PROTECT)
     created = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['last_name', '-created']
+
     def __str__(self):
         return self.first_name
