@@ -3,6 +3,16 @@
 {% block content %}
 <h3>Contacts</h3>
 <div>
-    
+    <p>You have {{contacts_count}} people in your contacts</p>
+    {% for contact in contacts %}
+        <a href="{% url 'contact' contact.id %}">
+            <div>
+                <h4>{{contact.first_name}} {{contact.last_name}}</h4>
+                <p>{{contact.phone_number}}</p>
+
+                <a href="/">usuń</a>
+            </div>
+        </a>
+    {% endfor %}
 </div>
 {% endblock content %}

@@ -1,0 +1,13 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<main>
+    <h4>{{contact.first_name}} {{contact.last_name}}</h4>
+    <p>Phone number: {{contact.phone_number}}</p>
+    <p>Email: {{contact.email}}</p>
+    <p>City: {{contact.city}}</p>
+    <p>Status: {{contact.status}}</p>
+</main>
+
+{% endblock content %}

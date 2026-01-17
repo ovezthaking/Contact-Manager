@@ -12,7 +12,7 @@ class ContactStatus(models.Model):
 
 
 class Contact(models.Model):
-    # formaty typu: +48123456789, 123-456-789
+    # format: +48123456789, 123-456-789, etc.
     phone_regex = RegexValidator(
         regex=r'^\+?1?\d{9,15}',
         message='Phone format: +99999999. Up to 15 digits.'
