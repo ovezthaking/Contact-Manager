@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Contact
 from .forms import ContactForm
+from django.db.models import Q
 
 # Create your views here.
 
@@ -8,23 +9,37 @@ from .forms import ContactForm
 def index(request):
     sort_param = request.GET.get('sort_by', 'last_name')
     order = request.GET.get('order', 'asc')
+    query = request.GET.get('q', '')
+
     sort_options = {
         'last_name': 'last_name',
         'created': 'created',
     }
+
     sort_direction = ''
     if order == 'desc':
         sort_direction = '-'
 
     sort_field = f'{sort_direction}{sort_param}'
-    contacts = Contact.objects.all().order_by(sort_field)
+    contacts = Contact.objects.all()
+
+    if query:
+        contacts = contacts.filter(
+            Q(first_name__icontains=query) |
+            Q(last_name__icontains=query) |
+            Q(email__icontains=query) |
+            Q(phone_number__icontains=query)
+        )
+
+    contacts = contacts.order_by(sort_field)
 
     contacts_count = contacts.count()
     context = {
         'contacts': contacts,
         'contacts_count': contacts_count,
         'active_sort': sort_param if sort_param in sort_options else 'created',
-        'order': order
+        'order': order,
+        'query': query,
     }
     return render(request, 'contact/index.html', context)
 

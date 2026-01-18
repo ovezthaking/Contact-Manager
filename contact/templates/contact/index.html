@@ -4,19 +4,30 @@
 {% block content %}
 <h3>Contacts</h3>
 <div>
-    <p>You have {{contacts_count}} people in your contacts</p>
+    <div>
+        <p>You have {{contacts_count}} people in your contacts</p>
+        
+        <!-- Filtering by name, mail or phone number -->
+        <form method="get" action="{% url 'home' %}" style="margin-bottom: 20px;">
+            <input type="text" name="q" placeholder="Search..." value="{{query}}">
+            <button type="submit">Search</button>
+            {% if query %}
+                <a href="{% url 'home' %}">Clear</a>
+            {% endif %}
+        </form>
 
     <div>
+        <!-- Sorting by last name or date -->
         <label for="sort-select">Sort by:</label>
         <select id="sort-select" name="sort_by" onchange="changeSorting()">
             <option value="created" {% if active_sort == 'created' %}selected{% endif %}>Date added</option>
             <option value="last_name" {% if active_sort == 'last_name' %}selected{% endif %}>Last name</option>
         </select>
-        
+        <!-- Change sort direction -->
         {% if order == 'desc' %}
-            <a href="?sort_by={{active_sort}}&order=asc">↑ Ascending</a>
+            <a href="?sort_by={{active_sort}}&order=asc{% if query %}&q={{query}}{% endif %}">↑ Ascending</a>
         {% else %}
-            <a href="?sort_by={{active_sort}}&order=desc">↓ Descending</a>
+            <a href="?sort_by={{active_sort}}&order=desc{% if query %}&q={{query}}{% endif %}">↓ Descending</a>
         {% endif %}
     </div>
 
