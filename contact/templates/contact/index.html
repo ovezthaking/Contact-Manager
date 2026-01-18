@@ -4,6 +4,8 @@
 <h3>Contacts</h3>
 <div>
     <p>You have {{contacts_count}} people in your contacts</p>
+
+    <a href="{% url 'create-contact' %}">Add new contact</a>
     {% for contact in contacts %}
         <a href="{% url 'contact' contact.id %}">
             <div>
