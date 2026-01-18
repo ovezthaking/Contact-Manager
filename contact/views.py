@@ -6,10 +6,26 @@ from .forms import ContactForm
 
 
 def index(request):
-    contacts = Contact.objects.all()
+    sort_param = request.GET.get('sort_by', 'last_name')
+    order = request.GET.get('order', 'asc')
+    sort_options = {
+        'last_name': 'last_name',
+        'created': 'created',
+    }
+    sort_direction = ''
+    if order == 'desc':
+        sort_direction = '-'
+
+    sort_field = f'{sort_direction}{sort_param}'
+    contacts = Contact.objects.all().order_by(sort_field)
 
     contacts_count = contacts.count()
-    context = {'contacts': contacts, 'contacts_count': contacts_count}
+    context = {
+        'contacts': contacts,
+        'contacts_count': contacts_count,
+        'active_sort': sort_param if sort_param in sort_options else 'created',
+        'order': order
+    }
     return render(request, 'contact/index.html', context)
 
 

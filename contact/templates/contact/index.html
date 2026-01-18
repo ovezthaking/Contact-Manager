@@ -1,9 +1,24 @@
 {% extends 'main.html' %}
+{% load static %}
 
 {% block content %}
 <h3>Contacts</h3>
 <div>
     <p>You have {{contacts_count}} people in your contacts</p>
+
+    <div>
+        <label for="sort-select">Sort by:</label>
+        <select id="sort-select" name="sort_by" onchange="changeSorting()">
+            <option value="created" {% if active_sort == 'created' %}selected{% endif %}>Date added</option>
+            <option value="last_name" {% if active_sort == 'last_name' %}selected{% endif %}>Last name</option>
+        </select>
+        
+        {% if order == 'desc' %}
+            <a href="?sort_by={{active_sort}}&order=asc">↑ Ascending</a>
+        {% else %}
+            <a href="?sort_by={{active_sort}}&order=desc">↓ Descending</a>
+        {% endif %}
+    </div>
 
     <a href="{% url 'create-contact' %}">Add new contact</a>
     {% for contact in contacts %}
@@ -18,3 +33,7 @@
     {% endfor %}
 </div>
 {% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'contact/js/index.js' %}"></script>
+{% endblock scripts %}
