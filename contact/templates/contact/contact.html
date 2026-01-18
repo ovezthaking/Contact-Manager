@@ -4,6 +4,7 @@
 
 <main>
     <a href="{% url 'update-contact' contact.id %}">Edit</a>
+    <a href="{% url 'delete-contact' contact.id %}">Delete</a>
     <h4>{{contact.first_name}} {{contact.last_name}}</h4>
     <p>Phone number: {{contact.phone_number}}</p>
     <p>Email: {{contact.email}}</p>

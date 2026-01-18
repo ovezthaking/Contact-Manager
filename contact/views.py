@@ -41,5 +41,17 @@ def updateContact(request, pk):
         if form.is_valid():
             form.save()
             return redirect(f'/contact/{pk}')
+
     context = {'form': form}
     return render(request, 'contact/contact_form.html', context)
+
+
+def deleteContact(request, pk):
+    contact = Contact.objects.get(id=pk)
+
+    if request.method == 'POST':
+        contact.delete()
+        return redirect('home')
+
+    context = {'contact': contact}
+    return render(request, 'contact/delete.html', context)

@@ -12,7 +12,7 @@
                 <h4>{{contact.first_name}} {{contact.last_name}}</h4>
                 <p>{{contact.phone_number}}</p>
 
-                <a href="/">usuń</a>
+                <a href="{% url 'delete-contact' contact.id %}">Delete</a>
             </div>
         </a>
     {% endfor %}
