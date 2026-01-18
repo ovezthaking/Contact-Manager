@@ -30,3 +30,16 @@ def createContact(request):
 
     context = {'form': form}
     return render(request, 'contact/contact_form.html', context)
+
+
+def updateContact(request, pk):
+    contact = Contact.objects.get(id=pk)
+    form = ContactForm(instance=contact)
+
+    if request.method == 'POST':
+        form = ContactForm(request.POST, instance=contact)
+        if form.is_valid():
+            form.save()
+            return redirect(f'/contact/{pk}')
+    context = {'form': form}
+    return render(request, 'contact/contact_form.html', context)
