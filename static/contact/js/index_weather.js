@@ -102,7 +102,7 @@ const displayWeather = async(element, city) => {
 
     } catch (e) {
         console.error('Error displaying weather: ', e)
-        element.innerHTML = '<span>Error</span>'
+        element.innerHTML = '<span>Weather error</span>'
     }
 }
 
