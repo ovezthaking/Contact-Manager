@@ -3,3 +3,4 @@ djangorestframework
 django-filter
 markdown
 django-cors-headers
+django-tailwind[reload]
