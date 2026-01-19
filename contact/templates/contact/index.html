@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<main class="w-full h-full">
+<section class="w-full h-full">
     <h3>Contacts</h3>
     <div class="flex flex-col">
         <p>You have {{contacts_count}} people in your contacts</p>
@@ -35,7 +35,7 @@
 
     <a href="{% url 'create-contact' %}">Add new contact</a>
     <!-- <section class="grid lg:grid-cols-[repeat(auto-fill,minmax(100px,1fr))] lg:gap-10"> -->
-    <section class="grid grid-col-1 grid-flow-rows">
+    <aside class="grid grid-col-1 grid-flow-rows">
     {% for contact in contacts %}
         <a class="inline-block w-full mt-3 bg-sky-300" href="{% url 'contact' contact.id %}">
             <div class="contact-card w-full bg-inherit" data-city="{{contact.city}}" id="contact-profile">
@@ -50,8 +50,8 @@
             </div>
         </a>
     {% endfor %}
-    </section>
-</main>
+    </aside>
+</section>
 {% endblock content %}
 
 {% block scripts %}

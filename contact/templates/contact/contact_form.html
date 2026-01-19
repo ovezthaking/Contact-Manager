@@ -4,14 +4,14 @@
 
 {% block content %}
 
-<main>
+<section>
     <ul></ul>
     <form action="" method="post">
         {% csrf_token %}
         {{form.as_p}}
         <input type="submit" value="Submit">
     </form>
-</main>
+</section>
 
 {% endblock content %}
 

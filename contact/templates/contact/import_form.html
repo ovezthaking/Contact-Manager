@@ -2,13 +2,13 @@
 
 {% block content %}
 
-<main class="h-full ">
+<section class="h-full ">
     <ul></ul>
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{form.as_p}}
         <input type="submit" value="Import">
     </form>
-</main>
+</section>
 
 {% endblock content %}
