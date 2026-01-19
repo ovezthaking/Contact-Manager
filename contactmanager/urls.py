@@ -21,6 +21,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('contact.urls')),
+    path('api/', include('contact.api.urls'))
 ]
 
 if settings.DEBUG:

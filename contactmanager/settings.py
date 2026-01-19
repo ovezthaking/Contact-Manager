@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     'corsheaders',
+    'rest_framework',
 
     'contact.apps.ContactConfig',
 ]
