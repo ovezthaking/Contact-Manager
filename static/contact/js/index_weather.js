@@ -11,6 +11,7 @@ const getCityCoords = async (city) => {
             console.log('coords: ', coords)
             return coords
         }
+
     } catch (e) {
         console.error('Error getting lattitude and longitude: ', e)
     }
@@ -28,6 +29,7 @@ const getWeatherData = async (lat, lon) => {
             humidity: data.current.relative_humidity_2m,
             wind_speed: data.current.wind_speed_10m
         }
+
         console.log('current: ', weatherData)
         return weatherData
     } catch (e) {
@@ -35,10 +37,42 @@ const getWeatherData = async (lat, lon) => {
     }
 }
 
-async function testFn() {
-    const { lat, lon } = await getCityCoords('Wrocław')
+async function displayWeather(element, city) {
+    try {
+        const { lat, lon } = await getCityCoords(city)
+    
+        if (!lat && !lon){
+            element.innerHTML = '<span>N/A</span>'
+            return
+        }
+    
+        const weatherData = await getWeatherData(lat, lon)
+        const { temperature, humidity, wind_speed } = weatherData
+    
+        if (weatherData) {
+            element.innerHTML = `
+                <div> ${temperature}°C </div>
+                <div> ${humidity}% </div>
+                <div> ${wind_speed} km/h </div>
+            `
+        } 
+        else {
+            element.innerHTML = '<span>N/A</span>'
+        }
 
-    getWeatherData(lat, lon)
+    } catch (e) {
+        console.error('Error displaying weather: ', e)
+        element.innerHTML = '<span>Error</span>'
+    }
 }
 
-testFn()
+document.addEventListener('DOMContentLoaded', () => {
+    const weatherElements = document.querySelectorAll('.weather-info')
+
+    weatherElements.forEach(element => {
+        const city = element.dataset.city
+        if (city) {
+            displayWeather(element, city)
+        }
+    })
+})

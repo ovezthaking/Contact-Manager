@@ -34,10 +34,13 @@
     <a href="{% url 'create-contact' %}">Add new contact</a>
     {% for contact in contacts %}
         <a href="{% url 'contact' contact.id %}">
-            <div class="contact-card" data-city="{{contact.city}}">
+            <div class="contact-card" data-city="{{contact.city}}" id="contact-profile">
                 <h4>{{contact.first_name}} {{contact.last_name}}</h4>
                 <p>{{contact.phone_number}}</p>
                 <p class="city">{{contact.city}}</p>
+                <div class="weather-info" data-city="{{contact.city}}">
+                    <span class="weather-loading">Loading...</span>
+                </div>
 
                 <a href="{% url 'delete-contact' contact.id %}">Delete</a>
             </div>
