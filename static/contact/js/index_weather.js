@@ -1,4 +1,34 @@
+const CACHE_DURATION = 60 * 60 * 1000
+
+function setCache(key, data) {
+    localStorage.setItem(key, JSON.stringify({
+        data: data,
+        timestamp: Date.now()
+    }))
+}
+
+
+function getCache(key, duration=CACHE_DURATION) {
+    const cached = localStorage.getItem(key)
+    if (cached) {
+        const { data, timestamp } = JSON.parse(cached)
+        if (Date.now() - timestamp < duration) {
+            return data
+        }
+    }
+    return null
+}
+
+
 const getCityCoords = async (city) => {
+    const cacheKey = `coords_${city}`
+    const cached = getCache(cacheKey)
+    console.log('coords cache: ', cached)
+
+    if (cached) {
+        return cached
+    }
+
     try {
         const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${city}&format=json&limit=1`)
         const data = await res.json()
@@ -8,7 +38,8 @@ const getCityCoords = async (city) => {
                 lat: data[0].lat,
                 lon: data[0].lon
             }
-            console.log('coords: ', coords)
+
+            setCache(cacheKey, coords)
             return coords
         }
 
@@ -19,6 +50,12 @@ const getCityCoords = async (city) => {
 }
 
 const getWeatherData = async (lat, lon) => {
+    const cacheKey = `weather_${lat}_${lon}`
+    const cached = getCache(cacheKey)
+
+    if (cached) {
+        return cached
+    }
 
     try {
         const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,is_day,weather_code,wind_speed_10m`)
@@ -30,7 +67,7 @@ const getWeatherData = async (lat, lon) => {
             wind_speed: data.current.wind_speed_10m
         }
 
-        console.log('current: ', weatherData)
+        setCache(cacheKey, weatherData)
         return weatherData
     } catch (e) {
         console.error('Error getting Weather data: ', e)
