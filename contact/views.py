@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.db import transaction
 from django.contrib import messages
+from django.http import HttpResponse
 
 from .models import Contact, ContactStatus
 from .forms import ContactForm, ImportContactsForm
@@ -146,3 +147,33 @@ def importContacts(request):
 
     context = {'form': form}
     return render(request, 'contact/import_form.html', context)
+
+
+def exportContacts(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="contacts_export.csv"'
+
+    writer = csv.writer(response)
+
+    writer.writerow([
+        'first_name',
+        'last_name',
+        'phone_number',
+        'email',
+        'city',
+        'status'
+    ])
+
+    contacts = Contact.objects.all().select_related('status')
+
+    for contact in contacts:
+        writer.writerow([
+            contact.first_name,
+            contact.last_name,
+            contact.phone_number,
+            contact.email,
+            contact.city,
+            contact.status.name
+        ])
+
+    return response

@@ -9,4 +9,5 @@ urlpatterns = [
     path('edit-contact/<str:pk>/', views.updateContact, name='update-contact'),
     path('delete-contact/<str:pk>/', views.deleteContact, name='delete-contact'),
     path('import-contacts/', views.importContacts, name='import-contacts'),
+    path('export-contacts/', views.exportContacts, name='export-contacts'),
 ]
