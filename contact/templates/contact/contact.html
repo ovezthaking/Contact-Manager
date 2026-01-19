@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<main>
+<main class="flex-1 flex-col w-full flex items-center justify-center">
     <a href="{% url 'update-contact' contact.id %}">Edit</a>
     <a href="{% url 'delete-contact' contact.id %}">Delete</a>
     <h4>{{contact.first_name}} {{contact.last_name}}</h4>

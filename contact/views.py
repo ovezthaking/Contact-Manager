@@ -1,7 +1,14 @@
+import csv
+import io
+
 from django.shortcuts import render, redirect
-from .models import Contact
-from .forms import ContactForm, ImportContactsForm
 from django.db.models import Q
+from django.db import transaction
+from django.contrib import messages
+
+from .models import Contact, ContactStatus
+from .forms import ContactForm, ImportContactsForm
+
 
 # Create your views here.
 
@@ -90,6 +97,52 @@ def deleteContact(request, pk):
 
 def importContacts(request):
     form = ImportContactsForm()
+
+    if request.method == 'POST':
+        form = ImportContactsForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            data = request.FILES['file'].read().decode('utf-8')
+            reader = csv.DictReader(io.StringIO(data))
+
+            created = 0
+            skipped = 0
+
+            # if not file.name.endswith('.csv'):
+            #     messages.error(request, 'CSV files only')
+            #     return redirect('import-contacts')
+
+            # No problems - commit to the database, othervise roll back
+            with transaction.atomic():
+                for row in reader:
+                    status, _ = ContactStatus.objects.get_or_create(
+                        name=row['status']
+                    )
+
+                    contact, is_created = Contact.objects.get_or_create(
+                        email=row['email'],
+                        defaults={
+                            'first_name': row['first_name'],
+                            'last_name': row['last_name'],
+                            'phone_number': row['phone_number'],
+                            'city': row['city'],
+                            'status': status,
+                        }
+                    )
+
+                    if is_created:
+                        created += 1
+                    else:
+                        skipped += 1
+
+            messages.success(
+                request,
+                f'Imported: {created}, skipped (duplicates): {skipped}',
+                extra_tags='bg-green-100 text-green-800'
+            )
+
+            print(messages)
+            return redirect('home')
 
     context = {'form': form}
     return render(request, 'contact/import_form.html', context)

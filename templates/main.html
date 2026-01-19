@@ -9,11 +9,23 @@
     <link rel="stylesheet" href="{% static 'contact/css/index.css' %}">
     {% tailwind_css %}
 </head>
-<body class="grid grid-flow-rows grid-cols-1 items-center justify-items-center w-sm h-full">
+<body class="flex flex-col w-sm h-full">
     {% include 'navbar.html' %}
+    
+    {% if messages %}
+    <div class="w-full max-w-4xl mx-auto px-4 py-4">
+        {% for message in messages %}
+        <div class="mb-4 p-4 rounded-lg {% if message.tags %}{{ message.tags }}{% else %}bg-blue-100 text-blue-800{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
     {% block content %}
 
     {% endblock content %}
+
     {% include 'footer.html' %}
     
     {% block scripts %}

@@ -2,12 +2,12 @@
 
 {% block content %}
 
-<main>
+<main class="bg-red-500 h-full ">
     <ul></ul>
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{form.as_p}}
-        <input type="submit" value="Submit">
+        <input type="submit" value="Import">
     </form>
 </main>
 
