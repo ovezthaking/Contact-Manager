@@ -42,25 +42,51 @@
                        class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent transition-all duration-200"
                 >
             </div>
-            {% if query %}
-                <a href="{% url 'home' %}">Clear</a>
-            {% endif %}
-            <button type="submit">Search</button>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+                <!-- Sorting by last name or date -->
+                <div class="flex-1 flex items-center gap-2">
+                    <label for="sort-select" class="text-sm font-medium text-gray-700 whitespace-nowrap">Sort by:</label>
+                    <select 
+                        id="sort-select"
+                        name="sort_by"
+                        onchange="changeSorting()"
+                        class="flex-1 sm:flex-none px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:border-transparent text-sm"
+                        >
+                        <option value="created" {% if active_sort == 'created' %}selected{% endif %}>Date added</option>
+                        <option value="last_name" {% if active_sort == 'last_name' %}selected{% endif %}>Last name</option>
+                    </select>
+                </div>
+
+                <div class="flex gap-2">
+                <!-- Change sort direction -->
+                    {% if order == 'desc' %}
+                        <a href="?sort_by={{active_sort}}&order=asc{% if query %}&q={{query}}{% endif %}" 
+                           class="inline-flex items-center gap-1.5 px-4 py-2 border border-gray-300 bg-white rounded-md hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+                            </svg>
+                            Ascending
+                        </a>
+                    {% else %}
+                        <a href="?sort_by={{active_sort}}&order=desc{% if query %}&q={{query}}{% endif %}" 
+                           class="inline-flex items-center gap-1.5 px-4 py-2 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                            Descending
+                        </a>
+                    {% endif %}
+
+                    
+                    <button type="submit">Search</button>
+
+                    {% if query %}
+                        <a href="{% url 'home' %}">Clear</a>
+                    {% endif %}
+                </div>
+            </div> 
         </form>
-        <div>
-            <!-- Sorting by last name or date -->
-            <label for="sort-select">Sort by:</label>
-            <select id="sort-select" name="sort_by" onchange="changeSorting()">
-                <option value="created" {% if active_sort == 'created' %}selected{% endif %}>Date added</option>
-                <option value="last_name" {% if active_sort == 'last_name' %}selected{% endif %}>Last name</option>
-            </select>
-            <!-- Change sort direction -->
-            {% if order == 'desc' %}
-                <a href="?sort_by={{active_sort}}&order=asc{% if query %}&q={{query}}{% endif %}">↑ Ascending</a>
-            {% else %}
-                <a href="?sort_by={{active_sort}}&order=desc{% if query %}&q={{query}}{% endif %}">↓ Descending</a>
-            {% endif %}
-        </div>
     </div>
 
     <!-- <section class="grid lg:grid-cols-[repeat(auto-fill,minmax(100px,1fr))] lg:gap-10"> -->
