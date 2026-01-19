@@ -34,7 +34,7 @@ def contactsView(request):
         return Response(serializer.errors, status=400)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def contactView(request, pk):
     contact = Contact.objects.get(id=pk)
 
