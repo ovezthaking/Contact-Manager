@@ -37,7 +37,7 @@
     <!-- <section class="grid lg:grid-cols-[repeat(auto-fill,minmax(100px,1fr))] lg:gap-10"> -->
     <aside class="grid grid-col-1 grid-flow-rows">
     {% for contact in contacts %}
-        <a class="inline-block w-full mt-3 bg-sky-300" href="{% url 'contact' contact.id %}">
+        <a class="inline-block w-full mt-3" href="{% url 'contact' contact.id %}">
             <div class="contact-card w-full bg-inherit" data-city="{{contact.city}}" id="contact-profile">
                 <h4>{{contact.first_name}} {{contact.last_name}}</h4>
                 <p>{{contact.phone_number}}</p>
@@ -46,7 +46,7 @@
                     <span class="weather-loading">Loading...</span>
                 </div>
 
-                <a class="block bg-inherit bg-sky-300" href="{% url 'delete-contact' contact.id %}">Delete</a>
+                <a class="block" href="{% url 'delete-contact' contact.id %}">Delete</a>
             </div>
         </a>
     {% endfor %}
