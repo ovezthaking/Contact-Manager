@@ -3,38 +3,68 @@
 
 {% block content %}
 
-<section class="w-full h-full">
-    <h3>Contacts</h3>
-    <div class="flex flex-col">
-        <p>You have {{contacts_count}} people in your contacts</p>
+<section class="w-full h-full space-y-6">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900">Contacts</h1>
+            <p class="mt-1 text-sm text-gray-600">
+                {% if contacts_count == 1 %}
+                    1 contact in your list
+                {% else %}
+                    {{ contacts_count }} contacts in your list
+                {% endif %}
+            </p>
+        </div>
         
+        <a href="{% url 'create-contact' %}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-green-800 text-white text-sm font-medium rounded-lg hover:bg-green-500 transition-colors duration-200 shadow-sm hover:shadow-md">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+            Add Contact
+        </a>
+    </div>
+    
+    <!-- Search and filter section -->
+    <div class="bg-gray-100 rounded-l shadow-md border border-green-900 p-4 sm:p-6">
         <!-- Filtering by name, mail or phone number -->
-        <form method="get" action="{% url 'home' %}" style="margin-bottom: 20px;">
-            <input type="text" name="q" placeholder="Search..." value="{{query}}">
-            <button type="submit">Search</button>
+        <form method="get" action="{% url 'home' %}" class="space-y-4">
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+                <input type="text" 
+                       name="q" 
+                       placeholder="Search by name, email or phone..." 
+                       value="{{query}}"
+                       class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent transition-all duration-200"
+                >
+            </div>
             {% if query %}
                 <a href="{% url 'home' %}">Clear</a>
             {% endif %}
+            <button type="submit">Search</button>
         </form>
+        <div>
+            <!-- Sorting by last name or date -->
+            <label for="sort-select">Sort by:</label>
+            <select id="sort-select" name="sort_by" onchange="changeSorting()">
+                <option value="created" {% if active_sort == 'created' %}selected{% endif %}>Date added</option>
+                <option value="last_name" {% if active_sort == 'last_name' %}selected{% endif %}>Last name</option>
+            </select>
+            <!-- Change sort direction -->
+            {% if order == 'desc' %}
+                <a href="?sort_by={{active_sort}}&order=asc{% if query %}&q={{query}}{% endif %}">↑ Ascending</a>
+            {% else %}
+                <a href="?sort_by={{active_sort}}&order=desc{% if query %}&q={{query}}{% endif %}">↓ Descending</a>
+            {% endif %}
+        </div>
     </div>
 
-    <div>
-        <!-- Sorting by last name or date -->
-        <label for="sort-select">Sort by:</label>
-        <select id="sort-select" name="sort_by" onchange="changeSorting()">
-            <option value="created" {% if active_sort == 'created' %}selected{% endif %}>Date added</option>
-            <option value="last_name" {% if active_sort == 'last_name' %}selected{% endif %}>Last name</option>
-        </select>
-        <!-- Change sort direction -->
-        {% if order == 'desc' %}
-            <a href="?sort_by={{active_sort}}&order=asc{% if query %}&q={{query}}{% endif %}">↑ Ascending</a>
-        {% else %}
-            <a href="?sort_by={{active_sort}}&order=desc{% if query %}&q={{query}}{% endif %}">↓ Descending</a>
-        {% endif %}
-    </div>
-
-    <a href="{% url 'create-contact' %}">Add new contact</a>
     <!-- <section class="grid lg:grid-cols-[repeat(auto-fill,minmax(100px,1fr))] lg:gap-10"> -->
+    <!-- Contact list -->
     <aside class="grid grid-col-1 grid-flow-rows">
     {% for contact in contacts %}
         <a class="inline-block w-full mt-3" href="{% url 'contact' contact.id %}">
