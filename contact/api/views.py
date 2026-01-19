@@ -9,6 +9,7 @@ def getRoutes(request):
     routes = [
         'GET /api/',
         'GET /api/contacts',
+        'GET /api/contacts/{id}/',
         'POST /api/contacts/',
         'PUT /api/contacts/{id}/',
         'DELETE /api/contacts/{id}/'
@@ -17,8 +18,25 @@ def getRoutes(request):
     return Response(routes)
 
 
+@api_view(['GET', 'POST'])
+def contactsView(request):
+    if request.method == 'GET':
+        contacts = Contact.objects.all()
+        serializer = ContactSerializer(contacts, many=True)
+
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = ContactSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+
+
 @api_view(['GET'])
-def getContacts(request):
-    contacts = Contact.objects.all()
-    serializer = ContactSerializer(contacts, many=True)
+def getContact(request, pk):
+    contact = Contact.objects.get(id=pk)
+    serializer = ContactSerializer(contact, many=False)
+
     return Response(serializer.data)

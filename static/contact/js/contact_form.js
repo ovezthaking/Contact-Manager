@@ -10,7 +10,7 @@ document.querySelector('form').addEventListener('submit', (e) => {
         alertList.push(mailAlert)
     }
 
-    if(!validator.isMobilePhone(phone_number)){
+    if(!validator.isMobilePhone(phone_number, 'any')){
         e.preventDefault()
         let phoneAlert = 'Invalid phone number'
         alertList.push(phoneAlert)

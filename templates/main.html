@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{% static 'contact/css/index.css' %}">
     {% tailwind_css %}
 </head>
-<body class="flex flex-col w-sm h-full">
+<body class="flex flex-col w-sm min-h-screen">
     {% include 'navbar.html' %}
     
     {% if messages %}
@@ -21,10 +21,11 @@
         {% endfor %}
     </div>
     {% endif %}
-
+    <main class="flex-1 w-full">
     {% block content %}
 
     {% endblock content %}
+    </main>
 
     {% include 'footer.html' %}
     
