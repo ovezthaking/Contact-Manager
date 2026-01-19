@@ -19,9 +19,9 @@ const getCityCoords = async (city) => {
                 lat: data[0].lat,
                 lon: data[0].lon
             }
+            console.log('coords: ', coords)
+            return coords
         }
-
-        return coords
     } catch (e) {
         console.error('Error getting lattitude and longitude: ', e)
     }
@@ -33,9 +33,23 @@ const getWeatherData = async (lat, lon) => {
     try {
         const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,is_day,weather_code,wind_speed_10m`)
         const data = await res.json()
+        
+        const weatherData = {
+            temperature: data.current.temperature_2m,
+            humidity: data.current.relative_humidity_2m,
+            wind_speed: data.current.wind_speed_10m
+        }
+        console.log('current: ', weatherData)
+        return weatherData
     } catch (e) {
         console.error('Error getting Weather data: ', e)
     }
 }
 
-getCityCoords()
+async function testFn() {
+    const { lat, lon } = await getCityCoords('Wrocław')
+
+    getWeatherData(lat, lon)
+}
+
+testFn()
