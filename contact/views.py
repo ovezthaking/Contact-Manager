@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Contact
-from .forms import ContactForm
+from .forms import ContactForm, ImportContactsForm
 from django.db.models import Q
 
 # Create your views here.
@@ -86,3 +86,10 @@ def deleteContact(request, pk):
 
     context = {'contact': contact}
     return render(request, 'contact/delete.html', context)
+
+
+def importContacts(request):
+    form = ImportContactsForm()
+
+    context = {'form': form}
+    return render(request, 'contact/import_form.html', context)
