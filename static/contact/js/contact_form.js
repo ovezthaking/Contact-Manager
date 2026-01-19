@@ -15,12 +15,11 @@ document.querySelector('form').addEventListener('submit', (e) => {
         let phoneAlert = 'Invalid phone number'
         alertList.push(phoneAlert)
     }
+
     document.querySelector('ul').innerHTML = ''
     alertList.forEach(alert => {
         document.querySelector('ul').innerHTML += `
             <li>${alert}</li>
         `
     })
-    
-
 })
