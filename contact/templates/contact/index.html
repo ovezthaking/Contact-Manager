@@ -2,9 +2,10 @@
 {% load static %}
 
 {% block content %}
-<h3>Contacts</h3>
-<div>
-    <div>
+
+<main class="w-full">
+    <h3>Contacts</h3>
+    <div class="flex flex-col">
         <p>You have {{contacts_count}} people in your contacts</p>
         
         <!-- Filtering by name, mail or phone number -->
@@ -15,6 +16,7 @@
                 <a href="{% url 'home' %}">Clear</a>
             {% endif %}
         </form>
+    </div>
 
     <div>
         <!-- Sorting by last name or date -->
@@ -32,9 +34,11 @@
     </div>
 
     <a href="{% url 'create-contact' %}">Add new contact</a>
+    <!-- <section class="grid lg:grid-cols-[repeat(auto-fill,minmax(100px,1fr))] lg:gap-10"> -->
+    <section class="grid grid-col-1 grid-flow-rows">
     {% for contact in contacts %}
-        <a href="{% url 'contact' contact.id %}">
-            <div class="contact-card" data-city="{{contact.city}}" id="contact-profile">
+        <a class="inline-block w-full mt-3 bg-sky-300" href="{% url 'contact' contact.id %}">
+            <div class="contact-card w-full bg-inherit" data-city="{{contact.city}}" id="contact-profile">
                 <h4>{{contact.first_name}} {{contact.last_name}}</h4>
                 <p>{{contact.phone_number}}</p>
                 <p class="city">{{contact.city}}</p>
@@ -42,11 +46,12 @@
                     <span class="weather-loading">Loading...</span>
                 </div>
 
-                <a href="{% url 'delete-contact' contact.id %}">Delete</a>
+                <a class="block bg-inherit bg-sky-300" href="{% url 'delete-contact' contact.id %}">Delete</a>
             </div>
         </a>
     {% endfor %}
-</div>
+    </section>
+</main>
 {% endblock content %}
 
 {% block scripts %}

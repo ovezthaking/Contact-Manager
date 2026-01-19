@@ -1,13 +1,15 @@
 {% load static %}
+{% load static tailwind_tags %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="flex flex-col items-center justify-items-center w-full h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Manager</title>
     <link rel="stylesheet" href="{% static 'contact/css/index.css' %}">
+    {% tailwind_css %}
 </head>
-<body>
+<body class="grid grid-flow-rows grid-cols-1 items-center justify-items-center w-sm h-full">
     {% include 'navbar.html' %}
     {% block content %}
 
