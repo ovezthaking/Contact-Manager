@@ -1,5 +1,6 @@
 const CACHE_DURATION = 60 * 60 * 1000
 
+
 function setCache(key, data) {
     localStorage.setItem(key, JSON.stringify({
         data: data,
@@ -49,6 +50,7 @@ const getCityCoords = async (city) => {
     return null
 }
 
+
 const getWeatherData = async (lat, lon) => {
     const cacheKey = `weather_${lat}_${lon}`
     const cached = getCache(cacheKey)
@@ -74,7 +76,8 @@ const getWeatherData = async (lat, lon) => {
     }
 }
 
-async function displayWeather(element, city) {
+
+const displayWeather = async(element, city) => {
     try {
         const { lat, lon } = await getCityCoords(city)
     
@@ -102,6 +105,7 @@ async function displayWeather(element, city) {
         element.innerHTML = '<span>Error</span>'
     }
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const weatherElements = document.querySelectorAll('.weather-info')
